@@ -1,0 +1,8 @@
+*.sw*
+*~
+build/
+bin/
+node_modules/
+vendor/
+bower_components/
+.remote-sync.json

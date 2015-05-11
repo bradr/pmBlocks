@@ -1,0 +1,109 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.38
+4 verbose node symlink /usr/bin/node
+5 verbose readDependencies using package.json deps
+6 verbose install where, deps [ '/home/bradr/pmBlocks',
+6 verbose install   [ 'grunt',
+6 verbose install     'grunt-bump',
+6 verbose install     'grunt-coffeelint',
+6 verbose install     'grunt-contrib-clean',
+6 verbose install     'grunt-contrib-coffee',
+6 verbose install     'grunt-contrib-concat',
+6 verbose install     'grunt-contrib-copy',
+6 verbose install     'grunt-contrib-jshint',
+6 verbose install     'grunt-contrib-less',
+6 verbose install     'grunt-contrib-uglify',
+6 verbose install     'grunt-contrib-watch',
+6 verbose install     'grunt-conventional-changelog',
+6 verbose install     'grunt-html2js',
+6 verbose install     'grunt-karma',
+6 verbose install     'grunt-ng-annotate',
+6 verbose install     'karma',
+6 verbose install     'karma-coffee-preprocessor',
+6 verbose install     'karma-firefox-launcher',
+6 verbose install     'karma-jasmine' ] ]
+7 info preinstall ngbp@0.3.2
+8 verbose readDependencies using package.json deps
+9 verbose already installed skipping grunt@~0.4.1 /home/bradr/pmBlocks
+10 verbose already installed skipping grunt-bump@0.0.6 /home/bradr/pmBlocks
+11 verbose already installed skipping grunt-coffeelint@~0.0.10 /home/bradr/pmBlocks
+12 verbose already installed skipping grunt-contrib-clean@^0.4.1 /home/bradr/pmBlocks
+13 verbose already installed skipping grunt-contrib-coffee@^0.7.0 /home/bradr/pmBlocks
+14 verbose already installed skipping grunt-contrib-concat@^0.3.0 /home/bradr/pmBlocks
+15 verbose already installed skipping grunt-contrib-copy@^0.4.1 /home/bradr/pmBlocks
+16 verbose already installed skipping grunt-contrib-jshint@^0.4.3 /home/bradr/pmBlocks
+17 verbose already installed skipping grunt-contrib-less@~0.11.0 /home/bradr/pmBlocks
+18 verbose already installed skipping grunt-contrib-uglify@^0.2.7 /home/bradr/pmBlocks
+19 verbose already installed skipping grunt-contrib-watch@^0.4.4 /home/bradr/pmBlocks
+20 verbose already installed skipping grunt-conventional-changelog@^0.1.2 /home/bradr/pmBlocks
+21 verbose already installed skipping grunt-html2js@^0.1.9 /home/bradr/pmBlocks
+22 verbose already installed skipping grunt-karma@^0.8.2 /home/bradr/pmBlocks
+23 verbose already installed skipping grunt-ng-annotate@^0.8.0 /home/bradr/pmBlocks
+24 verbose already installed skipping karma@^0.12.9 /home/bradr/pmBlocks
+25 verbose already installed skipping karma-coffee-preprocessor@^0.2.1 /home/bradr/pmBlocks
+26 verbose already installed skipping karma-firefox-launcher@^0.1.3 /home/bradr/pmBlocks
+27 verbose already installed skipping karma-jasmine@^0.1.5 /home/bradr/pmBlocks
+28 silly resolved []
+29 info build /home/bradr/pmBlocks
+30 verbose linkStuff [ false, false, false, '/home/bradr' ]
+31 info linkStuff ngbp@0.3.2
+32 verbose linkBins ngbp@0.3.2
+33 verbose linkMans ngbp@0.3.2
+34 verbose rebuildBundles ngbp@0.3.2
+35 verbose rebuildBundles [ '.bin',
+35 verbose rebuildBundles   'coffeelint',
+35 verbose rebuildBundles   'grunt',
+35 verbose rebuildBundles   'grunt-bump',
+35 verbose rebuildBundles   'grunt-coffeelint',
+35 verbose rebuildBundles   'grunt-contrib-clean',
+35 verbose rebuildBundles   'grunt-contrib-coffee',
+35 verbose rebuildBundles   'grunt-contrib-concat',
+35 verbose rebuildBundles   'grunt-contrib-copy',
+35 verbose rebuildBundles   'grunt-contrib-jshint',
+35 verbose rebuildBundles   'grunt-contrib-less',
+35 verbose rebuildBundles   'grunt-contrib-uglify',
+35 verbose rebuildBundles   'grunt-contrib-watch',
+35 verbose rebuildBundles   'grunt-conventional-changelog',
+35 verbose rebuildBundles   'grunt-html2js',
+35 verbose rebuildBundles   'grunt-karma',
+35 verbose rebuildBundles   'grunt-ng-annotate',
+35 verbose rebuildBundles   'karma',
+35 verbose rebuildBundles   'karma-coffee-preprocessor',
+35 verbose rebuildBundles   'karma-firefox-launcher',
+35 verbose rebuildBundles   'karma-jasmine' ]
+36 verbose rebuild bundle /home/bradr/pmBlocks/node_modules/coffeelint
+37 info build /home/bradr/pmBlocks/node_modules/coffeelint
+38 info preinstall coffeelint@1.9.6
+39 verbose linkStuff [ false, false, false, '/home/bradr/pmBlocks/node_modules' ]
+40 info linkStuff coffeelint@1.9.6
+41 verbose linkBins coffeelint@1.9.6
+42 verbose link bins [ { coffeelint: './bin/coffeelint' },
+42 verbose link bins   '/home/bradr/pmBlocks/node_modules/.bin',
+42 verbose link bins   false ]
+43 verbose linkMans coffeelint@1.9.6
+44 verbose rebuildBundles coffeelint@1.9.6
+45 verbose rebuildBundles [ '.bin',
+45 verbose rebuildBundles   'coffee-script',
+45 verbose rebuildBundles   'glob',
+45 verbose rebuildBundles   'ignore',
+45 verbose rebuildBundles   'optimist',
+45 verbose rebuildBundles   'resolve',
+45 verbose rebuildBundles   'strip-json-comments' ]
+46 error Error: EACCES, unlink '/home/bradr/pmBlocks/node_modules/.bin/coffeelint'
+46 error  { [Error: EACCES, unlink '/home/bradr/pmBlocks/node_modules/.bin/coffeelint']
+46 error   errno: 3,
+46 error   code: 'EACCES',
+46 error   path: '/home/bradr/pmBlocks/node_modules/.bin/coffeelint' }
+47 error Please try running this command again as root/Administrator.
+48 error System Linux 3.13.0-48-generic
+49 error command "/usr/bin/node" "/usr/bin/npm" "install"
+50 error cwd /home/bradr/pmBlocks
+51 error node -v v0.10.38
+52 error npm -v 1.4.28
+53 error path /home/bradr/pmBlocks/node_modules/.bin/coffeelint
+54 error code EACCES
+55 error errno 3
+56 error stack Error: EACCES, unlink '/home/bradr/pmBlocks/node_modules/.bin/coffeelint'
+57 verbose exit [ 3, true ]
