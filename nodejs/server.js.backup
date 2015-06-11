@@ -1,0 +1,291 @@
+var express = require('express');
+var hbs = require('express-handlebars');
+//var redis = require('./redis.js');
+var ws = require ('./ws.js');
+var bodyParser = require('body-parser');
+var http = require('http');
+var https = require('https');
+var reload = require('reload');
+var querystring = require('querystring');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+var cookieParser = require( "cookie-parser" );
+
+var PORT = 8080;
+
+//var session = {user:'', pass:''};
+var isLoggedIn = false;
+var isAdmin = false;
+
+var app = express();
+
+app.engine('hbs', hbs({extname: 'hbs', defaultLayout: 'main'}));
+app.set('view engine', 'hbs');
+app.set('port', 8080);
+
+app.use( cookieParser() );
+
+app.use(session({
+  store: new RedisStore(({
+    host:'127.0.0.1',
+    port: 6379,
+    prefix:'sess'
+  })),
+  secret: 'Sy7NN5DfnwYm',
+  cookie: { secure: false },
+  resave: true,
+  saveUninitialized: true
+}));
+
+/// parse various different custom JSON types as JSON
+app.use(bodyParser.json({ type: 'application/*+json' }));
+// parse some custom thing into a Buffer
+//app.use(bodyParser.raw({ type: 'application/vnd.custom-type' }));
+// parse an HTML body into a string
+//app.use(bodyParser.text({ type: 'text/html' }));
+//app.use(bodyParser());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// parse application/json
+app.use(bodyParser.json());
+
+// a middleware with no mount path; gets executed for every request to the app
+app.use(function (req, res, next) {
+  console.log('Time:', Date.now());
+  next();
+});
+app.use('/static',express.static('static'));
+app.use('/views',express.static('views'));
+
+// Main Search Page
+app.get('/', function (req, res, next) {
+  //ws.describe(function(){});
+  res.render('index', { title:'Search', message:'Search Now:', isLoggedIn:req.session.isLoggedIn} );
+});
+
+app.get('/admin', function (req, res, next) {
+  var UserFields = { Field: [
+    'Name',
+    'EmailAddress',
+    'ObjectId'
+  ]};
+  var UserProfileFields = { Field: [
+    'Name',
+    'Privilege',
+    'IsSuperUser',
+    'ObjectId'
+  ]};
+  var UserLicenseFields = { Field: [
+    'UserName',
+    'LicenseType',
+    'UserObjectId'
+  ]};
+/*
+  var ResourceCodeFields = { Field: [
+    'CodeValue',
+    'Description',
+    'CodeTypeName'
+  ]};
+  var ActivityFields = { Field: [
+    'Name',
+    'PlannedDuration',
+    'PlannedStartDate',
+    'PlannedFinishDate',
+    'Status',
+    'WBSName',
+    'WBSPath'
+  ]};
+  var ActivityCodeFields = { Field: [
+    'CodeTypeName',
+    'CodeTypeScope',
+    'CodeValue',
+  ]};
+  var ProjectFields = { Field: [
+    'Name',
+    'OBSName'
+  ]};
+*/
+  if (req.session.isLoggedIn) {
+    ws.run('ReadUsers','User', UserFields, req.session, function(err, users){
+      ws.run('ReadUserLicenses','UserLicense', UserLicenseFields, req.session, function(err, licenses){
+//      ws.run('ReadResourceCodes','ResourceCode', ResourceCodeFields, req.session, function(err, resourcecodes){
+//        ws.run('ReadActivities','Activity', ActivityFields, req.session, function(err, activities){
+//          ws.run('ReadActivityCodes','ActivityCode', ActivityCodeFields, req.session, function(err, activitycodes){
+//            ws.run('ReadProjects','Project', ProjectFields, req.session, function(err, projects){
+              users = users.User;
+              licenses = licenses.UserLicense;
+              for (var i=0; i < users.length;i++) {
+                for (var j=0;j < licenses.length;j++) {
+                  if (users[i].ObjectId == licenses[j].UserObjectId) {
+                    console.log(users[i].License);
+                    if (users[i].License) {
+                      users[i].License += ', '+licenses[j].LicenseType;
+                    } else {
+                      users[i].License = licenses[j].LicenseType;
+                    }
+                  }
+                }
+              }
+              //console.log(JSON.stringify(licenses));
+              res.render('admin', {admin:req.session.isAdmin, superuser:req.session.isSuperUser, isLoggedIn:req.session.isLoggedIn, users:users}); //, resourcecodes:resourcecodes.ResourceCode, activity:activities.Activity, activitycodes:activitycodes.ActivityCode, project:projects.Project});
+//            });
+//          });
+//        });
+//      });
+      });
+    });
+  } else {
+   res.redirect('/login');
+  }
+});
+app.get('/admin/delUser/:user', function (req, res, next) {
+  if (req.session.isLoggedIn) {
+    ws.run('DeleteUsers','User', { ObjectId:[req.params.user] }, req.session, function(err, users){
+      res.redirect('/admin');
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+app.post('/admin/addUser', function (req, res, next) {
+  if (req.session.isLoggedIn) {
+    ws.run('CreateUsers','User', { User: [{Name:req.body.user, EmailAddress:req.body.email}] }, req.session, function(err,result){
+      if (err) {console.log("Error Adding User:"+err);}
+      console.log('Result'+result);
+      res.redirect('/admin');
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.post('/service/User/CreateUsers', function(req, res, next) {
+  if (req.session.isLoggedIn) {
+    ws.run('CreateUsers','User', { User: [{Name:req.body.Name, EmailAddress:req.body.EmailAddress}] }, req.session, function(err,result){
+      if (err) {
+        console.log("Error Adding User:"+err);
+
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.send(result);
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+app.get('/service/User/ReadUsers', function(req,res,next) {
+  var UserFields = { Field: [
+    'Name',
+    'EmailAddress',
+    'ObjectId'
+  ]};
+  if (req.session.isLoggedIn) {
+    ws.run('ReadUsers','User', UserFields, req.session, function(err, users){
+      if (err) {console.log("Error Reading Users:"+err);}
+      res.setHeader('Content-Type', 'application/json');
+      res.send(users);
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/p6login', function (req, res, next) {
+  if (req.session.isLoggedIn) {
+
+    var data = querystring.stringify({
+      username: req.session.user,
+      password: req.session.pass,
+      databaseId: '1',
+      actionType: 'login'
+    });
+    var options = {
+      host: 'pmblocks.com',
+      port: 443,
+      path: '/p6/action/login',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(data)
+      }
+    };
+
+    var httpreq = https.request(options, function (response) {
+      var output='';
+      response.setEncoding('utf8');
+      response.on('data', function (chunk) {
+        output += chunk;
+      });
+      response.on('end', function() {
+        res.send(output);
+        //res.redirect('https://pmblocks.com/p6/action/home');
+      });
+    });
+    httpreq.write(data);
+    httpreq.end();
+
+  } else {
+    res.redirect('/login');
+  }
+});
+app.get('/tmweblogin', function (req, res, next) {
+  if (req.session.isLoggedIn) {
+
+      res.redirect('/admin');
+
+
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/login', function (req, res, next) {
+  if (req.session.isLoggedIn) {
+    res.redirect('/admin');
+  } else {
+    res.render('login', {isLoggedIn:false});
+  }
+});
+
+app.post('/login', function (req, res, next) {
+  //console.log(req.body.user,req.body.password);
+//  session.user=req.body.user;
+//  session.pass=req.body.password;
+  console.log(req.body.user);
+  req.session.user=req.body.user;
+  req.session.pass=req.body.password;
+  console.log(req.session.user);
+  ws.run('Login','Authentication', {UserName:req.session.user, Password:req.session.pass}, req.session, function(err, loginSuccess){
+    console.log("Login Result:", loginSuccess);
+    if (loginSuccess.Return) {
+      req.session.isLoggedIn = true;
+      if (req.session.user=="admin") { req.session.isAdmin = true; }
+      if (req.session.user=="admin") { req.session.isSuperUser = true; }
+      res.redirect('/admin');
+    } else {
+      res.render('login', { message:"Login Failed" });
+    }
+  });
+});
+
+app.get('/logout', function (req, res, next) {
+//  session.user="";
+//  session.pass="";
+  delete req.session.user;
+  delete req.session.pass;
+  delete req.session.isAdmin;
+  delete req.session.isSuperUser;
+  delete req.session.isLoggedIn;
+  req.session.destroy();
+  isLoggedIn = false;
+  isAdmin = false;
+  res.redirect('/');
+});
+
+
+var server = http.createServer(app);
+reload(server,app);
+server.listen(app.get('port'),function(){
+  console.log('Running on localhost:' + app.get('port'));
+});

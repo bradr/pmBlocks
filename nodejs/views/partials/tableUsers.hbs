@@ -1,0 +1,18 @@
+<table id="{{usertype}}" class="table">
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>License</th>
+    <th></th>
+  </tr>
+  {{#each users}}
+  <tr>
+    <td>{{this.ObjectId}}</td>
+    <td>{{this.Name}}</td>
+    <td>{{this.EmailAddress}}</td>
+    <td>{{this.License}}</td>
+    <td><a href="#" data-href="/admin/deleteUser/{{this.ObjectId}}" data-toggle="modal" data-target="#confirm-delete"><span class="glyphicon glyphicon-remove"></span></a> </td>
+  </tr>
+  {{/each}}
+</table>

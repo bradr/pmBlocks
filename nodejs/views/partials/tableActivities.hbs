@@ -1,0 +1,20 @@
+<table id="activitytable" class="table">
+  <tr>
+    <th>WBS Path</th>
+    <th>WBS Name</th>
+    <th>Name</th>
+    <th>Planned Duration</th>
+    <th>Planned Start Date</th>
+    <th>Planned Finish Date</th>
+  </tr>
+  {{#each activity}}
+  <tr>
+    <td>{{this.WBSPath}}</td>
+    <td>{{this.WBSName}}</td>
+    <td>{{this.Name}}</td>
+    <td>{{this.PlannedDuration}}</td>
+    <td>{{this.PlannedStartDate}}</td>
+    <td>{{this.PlannedFinishDate}}</td>
+  </tr>
+  {{/each}}
+</table>

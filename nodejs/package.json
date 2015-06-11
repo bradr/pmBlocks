@@ -1,0 +1,25 @@
+{
+  "name": "openbuildingcodes-nodejs",
+  "description": "OpenBuildingCodes nodejs Server",
+  "version": "0.0.1",
+  "private": true,
+  "main": "server.js",
+  "dependencies": {
+    "express": "*",
+    "express-handlebars": "*",
+    "redis": "*",
+    "forever": "*",
+    "body-parser": "*",
+    "soap": "*",
+    "querystring":"*",
+    "express-session": "*",
+    "asyncblock": "*",
+    "connect-redis": "*"
+  },
+  "scripts": {
+    "start1": "nodemon /app/server.js",
+    "start2": "nodemon -x 'cd /app/ && node server.js'",
+    "start3": "forever --minUptime 100000 start /app/server.js && forever list && forever logs",
+    "start":"echo 'hello'"
+  }
+}

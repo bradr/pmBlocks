@@ -1,0 +1,15 @@
+    <h1>Login</h1>
+    <form class="navbar-left well col-md-6" role="form" method="post">
+        <div class="form-group">
+          <label for="user">User:</label>
+          <input type="text" class="form-control" name="user">
+          <label for="password">Password:</label>
+          <input type="password" class="form-control" name="password">
+          <p>
+          {{#if message}}
+          <div class="alert alert-danger" role="alert">Login Failed</div>
+          {{/if}}
+          <p>
+          <button type="submit" class="btn btn-default">Login</button>
+        </div>
+    </form>

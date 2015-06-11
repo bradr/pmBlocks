@@ -1,0 +1,83 @@
+<h1>pmBlocks</h1>
+<div class="well" id="loginButtons">
+  <button type="button" class="btn btn-primary" id="p6login">Launch P6</button>
+  <button type="button" class="btn btn-primary" id="tmweblogin">Launch Team Member</button>
+</div>
+<div role="tabpanel">
+  <ul class="nav nav-tabs" role="tablist">
+    {{#if superuser}}
+      <li role="presentation"><a href="#superuser" role="tab" data-toggle="tab">Superuser Admin</a></li>
+    {{/if}}
+    {{#if admin}}
+      <li role="presentation" class="active"><a href="#users" role="tab" data-toggle="tab">Users</a></li>
+    {{/if}}
+
+<!--
+    <li role="presentation"><a href="#resources" role="tab" data-toggle="tab">Resources</a></li>
+    <li role="presentation"><a href="#activities" role="tab" data-toggle="tab">Activities</a></li>
+    <li role="presentation"><a href="#activitycodes" role="tab" data-toggle="tab">Activity Codes</a></li>
+    <li role="presentation"><a href="#projects" role="tab" data-toggle="tab">Projects</a></li>
+-->
+  </ul>
+
+  <div class="tab-content">
+
+    <!--Superuser Admin Dashboard -->
+    <div role="tabpanel" class="tab-pane" id="superuser">
+      <h3>Superuser Administration</h3>
+      {{> tableOrgs }}
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addOrg">Add Organization</button>
+      {{> popupAddOrg}}
+    </div>
+
+    <!--User Admin Dashbaord -->
+    <div role="tabpanel" class="tab-pane active" id="users">
+      {{#if superuser}}
+      <p>
+        <table><td><td>
+          Manage: &nbsp;
+        </td><td>
+        <div class="dropdown" id="adminuserdropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="obsmenubutton" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
+                {{ orgname }} <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="obsmenubutton">
+            {{#each org}}
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="/admin/{{this.Id}}" id="{{this.Id}}" data-target="dropdown">{{this.Name}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </td></tr></table>
+      {{/if}}
+      <h3>Project Management Users</h3>
+        {{> tableUsers usertype='pmusers' users=PMs}}
+      <p>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPMUser">Add Project Management User</button>
+      <h3>Timewriters</h3>
+        {{> tableUsers usertype='timewriters' users=TMs}}
+      <p>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTMUser">Add Timewriter</button>
+      {{> popupAddUsers userType="PM"}}
+      {{> popupAddUsers userType="TM"}}
+      {{> popupConfirmDelete}}
+    </div>
+<!--
+    <div role="tabpanel" class="tab-pane" id="resources">
+      <h3>Resources</h3>
+      {{> tableResources}}
+    </div>
+    <div role="tabpanel" class="tab-pane" id="activities">
+      <h3>Activities</h3>
+      {{> tableActivities}}
+    </div>
+    <div role="tabpanel" class="tab-pane" id="activitycodes">
+      <h3>Activity Codes</h3>
+      {{> tableActivityCodes}}
+    </div>
+    <div role="tabpanel" class="tab-pane" id="projects">
+      <h3>Projects</h3>
+      {{> tableProjects}}
+    </div>
+-->
+  </div>
+</div>

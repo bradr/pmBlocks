@@ -1,0 +1,19 @@
+<table id="orgTable" class="table">
+  <tr>
+    <th>#</th>
+    <th>Organization</th>
+    <th>PMs</th>
+    <th>Timewriters</th>
+    <th></th>
+  </tr>
+  {{#each org}}
+  <tr>
+    <td>{{this.Id}}</td>
+    <td>{{this.Name}}</td>
+    <td><a id={{this.Id}} name="decrPM" href="#">-</a>&nbsp;{{this.PMs}} of {{this.PMLicenses}} &nbsp; <a name="incrPM" id="{{this.Id}}" href="#">+</a> </td>
+    <td> <a id={{this.Id}} namers="decrTM" href="#">-</a>&nbsp; {{this.TMs}} of {{this.TMLicenses}}&nbsp; <a name="incrTM" id="{{this.Id}}" href="#">+</a></td>
+  <!--  <td><a href="#" data-href="/admin/delUser/{{this.ObjectId}}" data-toggle="modal" data-target="#confirm-delete"><span class="glyphicon glyphicon-remove"></span></a> </td>
+  -->
+  </tr>
+  {{/each}}
+</table>

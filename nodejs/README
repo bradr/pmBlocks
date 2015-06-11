@@ -1,0 +1,73 @@
+users (list of users)
+users:[userid]:name
+users:[userid]:role (superuser/pm/timewriter)
+users:[userid]:rbs (0,1)
+users:[userid]:email
+
+rbs (list of rbss)
+rbs:[rbsid]:name (Fuel Online/Element Project Services)
+rbs:[rbsid]:adminid
+rbs:[rbsid]:numberofPMs
+rbs:[rbsid]:numberofTimewriters
+rbs:[rbsid]:PMs
+rbs:[rbsid]:Timewriters
+rbs:[rbsid]:PMlicenses
+rbs:[rbsid]:Timewriterlicenses
+
+RBSs:
+Element Project Services Resources
+EPS
+1336
+
+Fuel Online Resources
+FO
+1337
+
+Users:
+admin
+25
+administrator@pmcu.be
+
+Mark
+EPS1
+54
+jtsteenkamp@gmail.com
+
+Harpreet
+EPS2
+55
+bradroger@gmail.com
+
+Tino
+FO1
+64
+
+Victoria
+EPS3
+65
+
+Joseph
+EPS4
+66
+
+Mahir
+EPS5
+67
+
+Osama
+EPS6
+68
+
+Ryan
+EPS7
+69
+
+Trevor
+EPS8
+70
+
+Build:
+docker build -t bradr/openbuildingcodes-nodejs .
+
+To run in development mode:
+docker run -p 8080:8080 -v /Users/bradr/Documents/Projects/OpenBuildingCodes/nodejs/:/app --name nodejs --link redis:db bradr/openbuildingcodes-nodejs &
